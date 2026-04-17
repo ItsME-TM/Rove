@@ -1,0 +1,16 @@
+version: "3.8"
+services:
+  api:
+    build:
+      context: .
+      dockerfile: API/Dockerfile
+      args:
+        DOTNET_VERSION: 10.0
+    ports:
+      - "5001:5001"
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      ASPNETCORE_URLS: http://+:5001
+    volumes:
+      - ./data/rove.db:/app/rove.db
+    restart: unless-stopped
