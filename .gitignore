@@ -55,3 +55,4 @@ secrets.json
 *.log
 
 .fake
+API/appsettings.json
