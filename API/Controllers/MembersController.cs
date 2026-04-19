@@ -2,6 +2,7 @@ using API.Data;
 using API.Entities;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace API.Controllers
 {
@@ -10,9 +11,9 @@ namespace API.Controllers
     public class MembersController(AppDbContext context) : ControllerBase
     {
         [HttpGet] //localhost:5001/api/members
-        public ActionResult<IReadOnlyList<AppUser>> GetMembers()
+        public async Task<ActionResult<IReadOnlyList<AppUser>>> GetMembers()
         {
-            var members = context.Users.ToList();
+            var members = await context.Users.ToListAsync();
             return members;
         }
 
