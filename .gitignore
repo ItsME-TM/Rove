@@ -56,3 +56,5 @@ secrets.json
 
 .fake
 API/appsettings.json
+API/rove.db-shm
+API/rove.db-wal
