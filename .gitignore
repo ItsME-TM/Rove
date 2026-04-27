@@ -58,3 +58,4 @@ secrets.json
 API/appsettings.json
 API/rove.db-shm
 API/rove.db-wal
+API/rove.db
