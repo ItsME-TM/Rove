@@ -9,7 +9,7 @@ import { User } from '../types/user';
 
 @Component({
   selector: 'app-root',
-  imports: [Nav, Home],
+  imports: [Nav, Home],  // Import child components to make them available in this component
   templateUrl: './app.html',
   styleUrl: './app.css'
 })
@@ -17,11 +17,11 @@ export class App implements OnInit{
   private accountService = inject(AccountService);
   private http = inject(HttpClient);
   protected title = 'Rove';
-  protected members = signal<User[]>([]);
+  protected members = signal<User[]>([]);  // Signal to hold list of members from API
 
   async ngOnInit(){
-    this.members.set(await this.getMembers());
-    this.setCurrentUser();
+    this.members.set(await this.getMembers());  // Fetch members from API and store in signal
+    this.setCurrentUser();  // Load current user from localStorage
   }
   
   setCurrentUser(){
