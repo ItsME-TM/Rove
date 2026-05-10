@@ -1,21 +1,23 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, inject, OnInit, signal } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { Router, RouterOutlet } from '@angular/router';
 import { lastValueFrom } from 'rxjs';
 import { Nav } from "../layout/nav/nav";
 import { AccountService } from '../core/services/account-service';
 import { Home } from "../features/home/home";
 import { User } from '../types/user';
+import { NgClass } from '@angular/common';
 
 @Component({
   selector: 'app-root',
-  imports: [Nav, Home],  // Import child components to make them available in this component
+  imports: [Nav, RouterOutlet, NgClass],  // Import child components to make them available in this component
   templateUrl: './app.html',
   styleUrl: './app.css'
 })
 export class App implements OnInit{
   private accountService = inject(AccountService);
   private http = inject(HttpClient);
+  protected router = inject(Router);
   protected title = 'Rove';
   protected members = signal<User[]>([]);  // Signal to hold list of members from API
 
