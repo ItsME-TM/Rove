@@ -10,7 +10,7 @@ import { NgClass } from '@angular/common';
 
 @Component({
   selector: 'app-root',
-  imports: [Nav, RouterOutlet, NgClass],  // Import child components to make them available in this component
+  imports: [Nav, RouterOutlet],  // Import child components to make them available in this component
   templateUrl: './app.html',
   styleUrl: './app.css'
 })
