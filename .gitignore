@@ -61,3 +61,5 @@ API/rove.db-wal
 API/rove.db
 
 nvidia-claudecode-demo/*
+API/API.csproj.lscache
+.claude/settings.local.json
