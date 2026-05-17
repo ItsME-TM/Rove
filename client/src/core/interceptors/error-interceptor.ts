@@ -12,17 +12,27 @@ export const errorInterceptor: HttpInterceptorFn = (req, next) => {
       if(error){
         switch (error.status){
           case 400:
-            toast.error(error.error || 'Bad Request');
+            if(error.error.errors){
+              const modelStateErrors = [];
+              for(const key in error.error.errors){
+                if(error.error.errors[key]){
+                  modelStateErrors.push(error.error.errors[key]);
+                }
+              }throw modelStateErrors.flat();
+            } else {
+              toast.error(error.error);
+            }
             break;
           case 401:
             toast.error('Unauthorized');
             router.navigate(['/login']);
             break;
           case 404:
-            toast.error('Not Found');
+            router.navigateByUrl('/not-found');
             break;
           case 500:
-            toast.error('Internal Server Error');
+            const navigationExtras = {state: {error: error.error}}
+            router.navigateByUrl('/server-error', navigationExtras);
             break;
           default:
             toast.error('An error occurred');
