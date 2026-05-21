@@ -1,0 +1,39 @@
+using System;
+using API.Entities;
+using API.Interfaces;
+using Microsoft.EntityFrameworkCore;
+
+namespace API.Data;
+
+public class MemberRepository(AppDbContext context) : IMemberRepository
+{
+    public async Task<Member?> GetMemberByIdAsync(string id)
+    {
+        return await context.Members.FindAsync(id);
+    }
+
+    public async Task<IReadOnlyList<Member>> GetMembersAsync()
+    {
+        return await context.Members.ToListAsync();
+    }
+
+    public async Task<IReadOnlyList<Photo>> GetPhotosForMemberAsync(string memberId)
+    {
+        return await context.Members
+            .Where(x => x.Id == memberId)
+            .SelectMany(x => x.Photos)
+            .ToListAsync();
+    }
+
+    public async Task<bool> SaveAllAsync()
+    {
+        return await context.SaveChangesAsync() > 0;
+    }
+
+    // This does not actually update the member in the database, it just marks the entity as modified.
+    // Why we need this method is because we are using the Unit of Work pattern, where we want to track changes to entities and then save them all at once when SaveAllAsync is called.
+    public void Update(Member member)
+    {
+        context.Entry(member).State = EntityState.Modified;
+    }
+}
