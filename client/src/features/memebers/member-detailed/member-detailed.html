@@ -1,3 +1,38 @@
-@if(member$ | async; as member){
-    <h1 class="text-3xl pl-4">{{ member.displayName}}</h1>
+@if (member$ | async; as member) {
+  <div class="flex gap-6 h-full pl-4 pr-4">
+    <div class="card bg-base-200 flex flex-col w-1/4">
+      <div class="flex-1 overflow-y-auto px-3">
+        <img
+          src="{{ member.imageUrl || 'user.png' }}"
+          alt="image of member"
+          class="rounded-full mx-auto mt-3 object-cover w-40 h-40"
+        />
+        <div class="card-body">
+          <div class="flex flex-col items-center">
+            <div class="flex text-2xl text-primary">{{ member.displayName }}, 25</div>
+            <div class="text-sm">{{ member.city }}, {{ member.country }}</div>
+          </div>
+          <div class="divider"></div>
+          <ul class="menu rounded-box w-full text-lg">
+            <li><a routerLink="profile" routerLinkActive="text-primary">Profile</a></li>
+            <li><a routerLink="photos" routerLinkActive="text-primary">Photos</a></li>
+            <li><a routerLink="messages" routerLinkActive="text-primary">Messages</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="card-actions justify-between gap-2 px-2 mb-3">
+        <button class="btn btn-info flex-1">Go Back</button>
+        <button class="btn btn-outline flex-1">Link User</button>
+      </div>
+    </div>
+    <div class="card bg-base-200 w-3/4 p-4">
+        <h3 class="card-title text-3xl text-primary">{{title()}}</h3>
+        <div class="divider"></div>
+        <div>
+          <router-outlet/>
+        </div>
+    </div>
+  </div>
+}@else {
+    <div>Member Not Found</div>
 }
