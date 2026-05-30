@@ -9,6 +9,7 @@ import {
 } from '@angular/router';
 import { Member } from '../../../types/member';
 import { filter } from 'rxjs';
+import { AgePipe } from '../../../core/pipes/age-pipe';
 
   // Signals are synchronous wrappers around values that automatically notify
   // consumers when their value changes. They're fine-grained and perfect for
@@ -21,7 +22,7 @@ import { filter } from 'rxjs';
   //  happen over time, like API calls or user actions.
 @Component({
   selector: 'app-member-detailed',
-  imports: [RouterLink, RouterLinkActive, RouterOutlet],
+  imports: [RouterLink, RouterLinkActive, RouterOutlet, AgePipe],
   templateUrl: './member-detailed.html',
   styleUrl: './member-detailed.css',
 })
