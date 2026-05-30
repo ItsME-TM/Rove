@@ -1,6 +1,4 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
-import { MemberService } from '../../../core/services/member-service';
-import { AsyncPipe } from '@angular/common';
 import {
   ActivatedRoute,
   NavigationEnd,
@@ -10,7 +8,8 @@ import {
   RouterOutlet,
 } from '@angular/router';
 import { Member } from '../../../types/member';
-import { filter, Observable } from 'rxjs';
+import { filter } from 'rxjs';
+import { AgePipe } from '../../../core/pipes/age-pipe';
 
   // Signals are synchronous wrappers around values that automatically notify
   // consumers when their value changes. They're fine-grained and perfect for
@@ -23,21 +22,22 @@ import { filter, Observable } from 'rxjs';
   //  happen over time, like API calls or user actions.
 @Component({
   selector: 'app-member-detailed',
-  imports: [AsyncPipe, RouterLink, RouterLinkActive, RouterOutlet],
+  imports: [RouterLink, RouterLinkActive, RouterOutlet, AgePipe],
   templateUrl: './member-detailed.html',
   styleUrl: './member-detailed.css',
 })
 export class MemberDetailed implements OnInit {
-  private memberService = inject(MemberService);
   private route = inject(ActivatedRoute);
   // we created a observable because we want get http response quickly
   // so by using observable without freezing the UI and waiting
-  protected member$?: Observable<Member>;
+  protected member = signal<Member | null>(null);
   private router = inject(Router);
   protected title = signal<string | undefined>('Profile');
 
   ngOnInit(): void {
-    this.member$ = this.loadMember();
+    this.route.data.subscribe({
+      next: data => this.member.set(data['member'])
+    })
     //component first loads, we set the title to the first child route's title (which is 'Profile' by default)
     this.title.set(this.route.firstChild?.snapshot?.title);
     // then we subscribe to router events, and whenever a navigation ends, we update the title to the current child route's title
@@ -46,11 +46,5 @@ export class MemberDetailed implements OnInit {
         this.title.set(this.route.firstChild?.snapshot?.title);
       },
     });
-  }
-
-  loadMember() {
-    const id = this.route.snapshot.paramMap.get('id');
-    if (!id) return;
-    return this.memberService.getMember(id);
   }
 }
