@@ -55,7 +55,7 @@
         </button>
         <ul
           tabindex="1"
-          class="dropdown-content menu bg-base-100 rounded-box z-1 w-52 p-2 shadow-sm"
+          class="dropdown-content menu bg-base-100 rounded-box z-50 w-52 p-2 shadow-sm"
         >
           @for(theme of themes; track $index){
             <li>
@@ -77,9 +77,9 @@
           <ul
             tabindex="-1"
             class="dropdown-content menu bg-base-100 rounded-box z-1 w-52 p-2 shadow-sm border border-gray-300"
-            style="margin-top: 4px"
+            style="margin-top: 12px"
           >
-            <li><a>Edit Profile</a></li>
+            <li><a routerLink="/members/{{ user.id }}">Edit Profile</a></li>
             <li><a (click)="logout()">Logout</a></li>
           </ul>
         </div>

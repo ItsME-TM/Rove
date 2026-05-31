@@ -5,6 +5,12 @@
             <span>{{member.lastActive}}</span>
         </div>
         <h3 class="text-lg font-semibold text-primary">About {{member.displayName}}</h3>
-        <div>{{member.description}}</div>
+        @if(memberService.editMode()){
+            <div>
+                Profile Edit Form Here
+            </div>
+        }@else{
+            <div>{{member.description}}</div>
+        }
     </div>
 }
