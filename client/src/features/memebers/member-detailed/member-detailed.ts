@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, signal } from '@angular/core';
+import { Component, computed, inject, OnInit, signal } from '@angular/core';
 import {
   ActivatedRoute,
   NavigationEnd,
@@ -10,6 +10,8 @@ import {
 import { Member } from '../../../types/member';
 import { filter } from 'rxjs';
 import { AgePipe } from '../../../core/pipes/age-pipe';
+import { AccountService } from '../../../core/services/account-service';
+import { MemberService } from '../../../core/services/member-service';
 
   // Signals are synchronous wrappers around values that automatically notify
   // consumers when their value changes. They're fine-grained and perfect for
@@ -31,8 +33,13 @@ export class MemberDetailed implements OnInit {
   // we created a observable because we want get http response quickly
   // so by using observable without freezing the UI and waiting
   protected member = signal<Member | null>(null);
+  private accountService = inject(AccountService);
   private router = inject(Router);
   protected title = signal<string | undefined>('Profile');
+  protected memberService = inject(MemberService);
+  protected isCurrentUser = computed(() => {
+    return this.accountService.currentUser()?.id === this.route.snapshot.paramMap.get('id');
+  })
 
   ngOnInit(): void {
     this.route.data.subscribe({
