@@ -32,7 +32,6 @@ export class MemberDetailed implements OnInit {
   private route = inject(ActivatedRoute);
   // we created a observable because we want get http response quickly
   // so by using observable without freezing the UI and waiting
-  protected member = signal<Member | null>(null);
   private accountService = inject(AccountService);
   private router = inject(Router);
   protected title = signal<string | undefined>('Profile');
@@ -42,9 +41,7 @@ export class MemberDetailed implements OnInit {
   })
 
   ngOnInit(): void {
-    this.route.data.subscribe({
-      next: data => this.member.set(data['member'])
-    })
+
     //component first loads, we set the title to the first child route's title (which is 'Profile' by default)
     this.title.set(this.route.firstChild?.snapshot?.title);
     // then we subscribe to router events, and whenever a navigation ends, we update the title to the current child route's title
