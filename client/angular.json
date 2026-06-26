@@ -83,6 +83,7 @@
         },
         "serve": {
           "options": {
+            "port": 4250,
             "ssl": true,
             "sslCert": "./ssl/localhost.pem",
             "sslKey": "./ssl/localhost-key.pem"
