@@ -22,48 +22,6 @@ Rove is a premium, modern social community and matchmaking application. It featu
 
 ---
 
-## 📈 System Architecture
-
-```mermaid
-graph TD
-    subgraph Client [Angular Client (Port 4200)]
-        UI[Tailwind CSS v4 & DaisyUI v5 UI]
-        AuthS[Account Service]
-        MembS[Member Service]
-        IG[Auth & Unsaved Guards]
-        Interc[JWT & Error Interceptors]
-    end
-
-    subgraph API [ASP.NET Core Web API (Port 5001)]
-        Controllers[API Controllers]
-        AuthC[AccountController]
-        MembC[MembersController]
-        Repo[Member Repository]
-        EF[Entity Framework Core]
-    end
-
-    subgraph External [External Services & DB]
-        DB[(SQLite - rove.db)]
-        Cloudinary[Cloudinary Cloud Storage]
-    end
-
-    UI --> AuthS
-    UI --> MembS
-    AuthS --> Interc
-    MembS --> Interc
-    Interc --> IG
-    IG --> Controllers
-    
-    Controllers --> AuthC
-    Controllers --> MembC
-    AuthC --> Repo
-    MembC --> Repo
-    Repo --> EF
-    EF --> DB
-    MembC --> Cloudinary
-```
-
----
 
 ## ✨ Features
 
