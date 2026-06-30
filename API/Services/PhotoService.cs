@@ -19,7 +19,7 @@ public class PhotoService : IPhotoService
         );
         _cloudinary = new Cloudinary(account);
     }
-    public async Task<DeletionResult> DeletionResultAsync(string publicId)
+    public async Task<DeletionResult> DeletePhotoAsync(string publicId)
     {
         var deleteParams = new DeletionParams(publicId);
         return await _cloudinary.DestroyAsync(deleteParams);
