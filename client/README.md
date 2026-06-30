@@ -1,59 +1,73 @@
-# Client
+# 💻 Rove Client (Frontend)
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.2.7.
+Welcome to the frontend application for **Rove**, built using [Angular CLI](https://github.com/angular/angular-cli) version 21.2.7.
 
-## Development server
+This client interfaces with the [Rove API](../README.md) to provide a rich, responsive interface for community connection, profiles, photo galleries, and messaging.
 
-To start a local development server, run:
+---
 
+## 🛠️ Technology Stack
+
+* **Framework:** [Angular 21](https://angular.dev/)
+* **CSS Framework:** [Tailwind CSS v4](https://tailwindcss.com/)
+* **Component Library:** [DaisyUI v5](https://daisyui.com/)
+* **State & Flow:** Signals-based architecture and RxJS streams
+* **Unit Testing:** [Vitest](https://vitest.dev/)
+
+---
+
+## 🚀 Quick Start
+
+### 1. Install Dependencies
+Make sure you are in the `/client` directory, then run:
 ```bash
-ng serve
+npm install
 ```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
-
-## Code scaffolding
-
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
-
+### 2. Start the Development Server
 ```bash
-ng generate component component-name
+npm start
+```
+* Once started, open your browser and navigate to `http://localhost:4200/`.
+* The application will automatically reload whenever you modify any source files.
+
+### 3. Running Unit Tests
+To execute unit tests using the **Vitest** test runner:
+```bash
+npm run test
 ```
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
-
+### 4. Build for Production
+To compile the project and store the optimized build artifacts in the `dist/` directory:
 ```bash
-ng generate --help
+npm run build
 ```
 
-## Building
+---
 
-To build the project run:
+## 📂 Code Layout
 
-```bash
-ng build
+```text
+src/
+├── app/                  # Application routing, configuration, and root component
+├── core/                 # Core utilities
+│   ├── guards/           # Route guards (Auth guard, unsaved changes prevention)
+│   ├── interceptors/     # Http interceptors (JWT injection, error handling)
+│   ├── pipes/            # Reusable pipes
+│   └── services/         # Services for API communication (Account, Member, Toast)
+├── features/             # App features & page components
+│   ├── account/          # Register / login components
+│   ├── home/             # Landing / welcome component
+│   ├── members/          # Member lists, profile editing, photo uploading, & messages
+│   ├── messages/         # Main messages interface
+│   └── test-errors/      # Error handling test interface
+├── shared/               # Shared presentation elements and layouts
+│   ├── errors/           # Not Found & Server Error display pages
+│   └── navigation/       # Top navigation bar & menus
+└── types/                # TypeScript interfaces and type definitions
 ```
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+---
 
-## Running unit tests
-
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
-
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+## 🔗 Related Documentation
+* [Root Project README](../README.md) - For the complete API setup guide, SQLite database configurations, and Docker instructions.
