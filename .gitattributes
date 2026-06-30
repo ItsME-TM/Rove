@@ -1,0 +1,9 @@
+# Collapse package-lock.json in GitHub/GitLab Pull Requests and diffs
+**/package-lock.json linguist-generated=true
+
+# Collapse local development SSL certificates
+**/ssl/*.pem linguist-generated=true
+**/ssl/*.key linguist-generated=true
+
+# Collapse any binary/generated database artifacts
+*.bin linguist-generated=true
