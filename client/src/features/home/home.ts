@@ -13,7 +13,7 @@ export class Home {
   // @Input() marks a property as available for property binding from parent
   // required: true means this input must be provided by the parent
   //@Input({required: true}) membersFromApp: User[] = [];
-  protected registerMode = signal(false);
+  protected registerMode = signal(true);
 
   showRegister(value: boolean) {
     this.registerMode.set(value);
