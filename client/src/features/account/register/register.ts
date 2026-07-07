@@ -1,6 +1,14 @@
 import { Component, inject, input, OnInit, output } from '@angular/core';
 import { RegisterCreds, User } from '../../../types/user';
-import { AbstractControl, FormControl, FormGroup, ReactiveFormsModule, ValidationErrors, ValidatorFn, Validators } from "@angular/forms";
+import {
+  AbstractControl,
+  FormControl,
+  FormGroup,
+  ReactiveFormsModule,
+  ValidationErrors,
+  ValidatorFn,
+  Validators,
+} from '@angular/forms';
 import { AccountService } from '../../../core/services/account-service';
 import { JsonPipe } from '@angular/common';
 
@@ -10,7 +18,7 @@ import { JsonPipe } from '@angular/common';
   templateUrl: './register.html',
   styleUrl: './register.css',
 })
-export class Register implements OnInit{
+export class Register implements OnInit {
   // Modern input function (Angular 17+) to receive data from parent component (Home)
   // .required() means this input must be provided by the parent
   // This does the same thing as @Input() decorator but in a more concise way
@@ -20,7 +28,7 @@ export class Register implements OnInit{
   cancelRegister = output<boolean>();
   protected creds = {} as RegisterCreds;
   protected registerForm: FormGroup = new FormGroup({});
-  
+
   ngOnInit(): void {
     this.initializeForm();
   }
@@ -29,23 +37,27 @@ export class Register implements OnInit{
     this.registerForm = new FormGroup({
       email: new FormControl('johndoe@test.com', [Validators.required, Validators.email]),
       displayName: new FormControl('', Validators.required),
-      password: new FormControl('', [Validators.required, Validators.minLength(4), Validators.maxLength(8)]),
-      confirmPassword: new FormControl('', [Validators.required, this.matchvalues('password')])
+      password: new FormControl('', [
+        Validators.required,
+        Validators.minLength(4),
+        Validators.maxLength(8),
+      ]),
+      confirmPassword: new FormControl('', [Validators.required, this.matchvalues('password')]),
     });
     this.registerForm.controls['password'].valueChanges.subscribe(() => {
       this.registerForm.controls['confirmPassword'].updateValueAndValidity();
     });
   }
 
-  matchvalues(matchTo: string): ValidatorFn{
-    return (control: AbstractControl) : ValidationErrors | null => {
+  matchvalues(matchTo: string): ValidatorFn {
+    return (control: AbstractControl): ValidationErrors | null => {
       const parent = control.parent;
       if (!parent) return null;
       const matchValue = parent.get(matchTo)?.value;
-      return control.value === matchValue ? null : {passwordMismatch: true};
-    }
+      return control.value === matchValue ? null : { passwordMismatch: true };
+    };
   }
-  register(){
+  register() {
     console.log(this.registerForm.value);
     // this.accountService.register(this.creds).subscribe({
     //   next: response => {
