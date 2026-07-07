@@ -1,7 +1,7 @@
-<div class="grid grid-cols-5 gap-6 pl-4">
-    @for (member of members$ | async; track member.id){
-        <div>
-            <app-member-card [member]="member"/>
-        </div>
-    }
+<div class="grid grid-cols-5 gap-6 pl-4 pr-4">
+  @for (member of members$ | async; track member.id) {
+    <div>
+      <app-member-card [member]="member" />
+    </div>
+  }
 </div>
