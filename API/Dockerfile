@@ -1,3 +1,6 @@
+# Declare global ARG before any FROM statements so it is accessible in all stages
+ARG DOTNET_VERSION=10.0
+
 # --- Stage 1: Build the Angular Client ---
 FROM node:22-alpine AS client-build
 WORKDIR /app
@@ -11,7 +14,6 @@ COPY client/ ./client/
 RUN cd client && npm run build
 
 # --- Stage 2: Build the ASP.NET Core API ---
-ARG DOTNET_VERSION=10.0
 FROM mcr.microsoft.com/dotnet/sdk:${DOTNET_VERSION} AS build
 WORKDIR /src
 
