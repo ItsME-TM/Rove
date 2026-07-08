@@ -1,29 +1,42 @@
-#Declare the .NET version to use as a build argument, with a default value of 10.0
+# Declare global ARG before any FROM statements so it is accessible in all stages
 ARG DOTNET_VERSION=10.0
 
+# --- Stage 1: Build the Angular Client ---
+FROM node:22-alpine AS client-build
+WORKDIR /app
+
+# Copy package files first to leverage Docker layer caching
+COPY client/package*.json ./client/
+RUN cd client && npm install --no-audit --no-fund
+
+# Copy the rest of the client code and build
+COPY client/ ./client/
+RUN cd client && npm run build
+
+# --- Stage 2: Build the ASP.NET Core API ---
 FROM mcr.microsoft.com/dotnet/sdk:${DOTNET_VERSION} AS build
 WORKDIR /src
 
-#first copy the solution file to the container
+# Copy the project file and restore dependencies
 COPY ["API/API.csproj", "API/"]
 RUN dotnet restore "API/API.csproj"
 
-#then copy the rest of the source code to the container
+# Copy the rest of the API code and publish
 COPY . .
 WORKDIR "/src/API"
-#Build the project in Release configuration and output the published files to /app/publish
 RUN dotnet publish "API.csproj" -c Release -o /app/publish
 
-#Use the ASP.NET runtime image to run the application
+# --- Stage 3: Final Runtime Image ---
 FROM mcr.microsoft.com/dotnet/aspnet:${DOTNET_VERSION} AS runtime
 WORKDIR /app
-#Copy the published files from the build stage to the runtime stage
+
+# Copy published API files
 COPY --from=build /app/publish .
 
-# Set default listening URLs: HTTP on 5000, HTTPS on 5001 (can be overridden at runtime)
-# To enable HTTPS in the container, mount a PFX at `/https/aspnetapp.pfx`
-# and pass its password through `ASPNETCORE_Kestrel__Certificates__Default__Password`.
-ENV ASPNETCORE_URLS="http://+:5001"
-EXPOSE 5001
-ENTRYPOINT [ "dotnet", "API.dll" ]
+# Copy compiled Angular client files to the API's wwwroot folder
+COPY --from=client-build /app/client/dist/client/browser ./wwwroot
 
+# Expose port 5001 as the default fallback
+EXPOSE 5001
+
+ENTRYPOINT [ "dotnet", "API.dll" ]

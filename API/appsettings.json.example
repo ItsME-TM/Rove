@@ -6,7 +6,7 @@
     }
   },
   "ConnectionStrings": {
-    "DefaultConnection": "Data source=rove.db"
+    "DefaultConnection": "Server=YOUR_NEON_HOST.neon.tech;Database=neondb;Port=5432;User Id=YOUR_NEON_USER;Password=YOUR_NEON_PASSWORD;SslMode=Require;"
   },
   "TokenKey": "your_super_secret_jwt_key_at_least_64_characters_long_for_security",
   "CloudinarySettings": {
