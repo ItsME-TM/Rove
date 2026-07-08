@@ -7,7 +7,7 @@ WORKDIR /app
 
 # Copy package files first to leverage Docker layer caching
 COPY client/package*.json ./client/
-RUN cd client && npm ci
+RUN cd client && npm install --no-audit --no-fund
 
 # Copy the rest of the client code and build
 COPY client/ ./client/
