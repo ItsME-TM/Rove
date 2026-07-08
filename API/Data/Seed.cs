@@ -41,8 +41,8 @@ public class Seed
                     Gender = member.Gender,
                     City = member.City,
                     Country = member.Country,
-                    LastActive = member.LastActive,
-                    Created = member.Created
+                    LastActive = DateTime.SpecifyKind(member.LastActive, DateTimeKind.Utc),
+                    Created = DateTime.SpecifyKind(member.Created, DateTimeKind.Utc)
                 }
             };
             user.Member.Photos.Add(new Photo
