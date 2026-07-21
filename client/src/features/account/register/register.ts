@@ -1,4 +1,4 @@
-import { Component, inject, input, OnInit, output } from '@angular/core';
+import { Component, inject, input, OnInit, output, signal } from '@angular/core';
 import { RegisterCreds, User } from '../../../types/user';
 import {
   AbstractControl,
@@ -8,7 +8,7 @@ import {
   ReactiveFormsModule,
   ValidationErrors,
   ValidatorFn,
-  Validators,
+  Validators
 } from '@angular/forms';
 import { AccountService } from '../../../core/services/account-service';
 import { JsonPipe } from '@angular/common';
@@ -29,11 +29,13 @@ export class Register{
   // Output event emitter to send data to parent component
   cancelRegister = output<boolean>();
   protected creds = {} as RegisterCreds;
-  protected registerForm: FormGroup;
+  protected credentialsForm: FormGroup;
   private fb = inject(FormBuilder);
+  protected profileForm: FormGroup;
+  protected currentStep = signal(1);
 
   constructor() {
-    this.registerForm = this.fb.group({
+    this.credentialsForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
       displayName: ['', Validators.required],
       password: ['', [
@@ -43,8 +45,15 @@ export class Register{
       ]],
       confirmPassword: ['', [Validators.required, this.matchvalues('password')]],
     });
-    this.registerForm.controls['password'].valueChanges.subscribe(() => {
-      this.registerForm.controls['confirmPassword'].updateValueAndValidity();
+
+    this.profileForm = this.fb.group({
+      gender: ['', Validators.required],
+      dateOfBirth: ['', Validators.required],
+      city: ['', Validators.required],
+      country: ['', Validators.required],
+    })
+    this.credentialsForm.controls['password'].valueChanges.subscribe(() => {
+      this.credentialsForm.controls['confirmPassword'].updateValueAndValidity();
     });
   }
 
@@ -56,8 +65,22 @@ export class Register{
       return control.value === matchValue ? null : { passwordMismatch: true };
     };
   }
+
+  nextStep(){
+    if(this.credentialsForm.valid){
+      this.currentStep.update(prevStep => prevStep + 1);
+    }
+  }
+
+  prevStep(){
+    this.currentStep.update(prevStep => prevStep - 1);
+  }
   register() {
-    console.log(this.registerForm.value);
+    if(this.profileForm.valid && this.credentialsForm.valid){
+      const formData = {...this.credentialsForm.value, ...this.profileForm.value};
+      console.log('Form Data:', formData);
+    }
+    
     // this.accountService.register(this.creds).subscribe({
     //   next: response => {
     //     console.log(response);
