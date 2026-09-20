@@ -81,10 +81,15 @@
       </form>
     }
   </div>
-  <div class="flex flex-col items-start px-3 w-full mockup-code text-lg">
-    <div>Creds Value: {{ credentialsForm.value | json }}</div>
-    <div>Creds Status: {{ credentialsForm.status }}</div>
-    <div>Profile Value: {{ profileForm.value | json }}</div>
-    <div>Profile Status: {{ profileForm.status }}</div>
-  </div>
+  @if(validationErrors().length > 0)
+  {
+    <div class="mt-5 flex bg-gray-2 rounded-2xl w-1/2 p-3 mx-auto">
+      <ul class="flex flex-col text-error space-y-1">
+        @for(error of validationErrors(); track $index)
+        {
+          <li>{{ error}}</li>
+        }
+      </ul>
+    </div>
+  }
 </div>
