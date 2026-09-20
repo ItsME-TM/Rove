@@ -13,6 +13,7 @@ import {
 import { AccountService } from '../../../core/services/account-service';
 import { JsonPipe } from '@angular/common';
 import { TextInput } from '../../../shared/text-input/text-input';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-register',
@@ -28,11 +29,13 @@ export class Register{
   private accountService = inject(AccountService);
   // Output event emitter to send data to parent component
   cancelRegister = output<boolean>();
+  private router = inject(Router);
   protected creds = {} as RegisterCreds;
   protected credentialsForm: FormGroup;
   private fb = inject(FormBuilder);
   protected profileForm: FormGroup;
   protected currentStep = signal(1);
+  protected validationErrors = signal<string[]>([]);
 
   constructor() {
     this.credentialsForm = this.fb.group({
@@ -47,7 +50,7 @@ export class Register{
     });
 
     this.profileForm = this.fb.group({
-      gender: ['', Validators.required],
+      gender: ['male', Validators.required],
       dateOfBirth: ['', Validators.required],
       city: ['', Validators.required],
       country: ['', Validators.required],
@@ -84,16 +87,17 @@ export class Register{
   register() {
     if(this.profileForm.valid && this.credentialsForm.valid){
       const formData = {...this.credentialsForm.value, ...this.profileForm.value};
-      console.log('Form Data:', formData);
+      this.accountService.register(this.creds).subscribe({
+        next: () => {
+          this.router.navigateByUrl('/members');
+        },
+        error: error => {
+          console.log(error);
+          this.validationErrors.set(error);
+        }
+      });
     }
     
-    // this.accountService.register(this.creds).subscribe({
-    //   next: response => {
-    //     console.log(response);
-    //     this.cancel();
-    //   },
-    //   error: error => console.log(error)
-    // });
   }
 
   cancel() {
