@@ -21,7 +21,7 @@
     </button>
     <button
       class="btn btn-circle btn-ghost"
-      [disabled]="lastItemIndex() === totalCount()"
+      [disabled]="pageNumber() >= totalPages()"
       (click)="onPageChange(pageNumber() + 1)"
     >
       &rarr;
