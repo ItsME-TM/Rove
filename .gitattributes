@@ -7,3 +7,4 @@
 
 # Collapse any binary/generated database artifacts
 *.bin linguist-generated=true
+graphify-out/graph.json merge=graphify

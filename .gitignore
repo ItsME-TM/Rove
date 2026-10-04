@@ -64,3 +64,6 @@ nvidia-claudecode-demo/*
 API/API.csproj.lscache
 .claude/settings.local.json
 API/appsettings.Development.json
+
+graphify-out
+extract_preview.py
